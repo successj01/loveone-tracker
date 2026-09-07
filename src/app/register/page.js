@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, Phone, UserPlus } from "lucide-react";
+import { Eye, EyeOff, Heart, Phone, UserPlus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { validateRegister } from "@/utils/validators";
 import { APP_NAME } from "@/utils/constants";
@@ -22,6 +22,8 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     if (!loading && user) router.replace("/dashboard");
@@ -54,6 +56,9 @@ export default function RegisterPage() {
         ? "border-red-300 focus:ring-red-100"
         : "border-zinc-200 focus:border-rose-400 focus:ring-rose-100"
     }`;
+
+  const passwordInputCls = (key) =>
+    `${inputCls(key)} pr-11`;
 
   return (
     <main className="flex flex-1 items-center justify-center bg-gradient-to-br from-rose-50 via-white to-pink-50 p-4">
@@ -131,14 +136,28 @@ export default function RegisterPage() {
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-500">
                   Password
                 </label>
-                <input
-                  type="password"
-                  autoComplete="new-password"
-                  value={form.password}
-                  onChange={setField("password")}
-                  placeholder="Min. 6 characters"
-                  className={inputCls("password")}
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    value={form.password}
+                    onChange={setField("password")}
+                    placeholder="Min. 6 characters"
+                    className={passwordInputCls("password")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((visible) => !visible)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-zinc-400 transition hover:text-zinc-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="mt-1 text-xs font-medium text-red-500">{errors.password}</p>
                 )}
@@ -147,14 +166,28 @@ export default function RegisterPage() {
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-500">
                   Confirm
                 </label>
-                <input
-                  type="password"
-                  autoComplete="new-password"
-                  value={form.confirmPassword}
-                  onChange={setField("confirmPassword")}
-                  placeholder="Repeat password"
-                  className={inputCls("confirmPassword")}
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirm ? "text" : "password"}
+                    autoComplete="new-password"
+                    value={form.confirmPassword}
+                    onChange={setField("confirmPassword")}
+                    placeholder="Repeat password"
+                    className={passwordInputCls("confirmPassword")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((visible) => !visible)}
+                    aria-label={showConfirm ? "Hide password" : "Show password"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-zinc-400 transition hover:text-zinc-600"
+                  >
+                    {showConfirm ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
                 {errors.confirmPassword && (
                   <p className="mt-1 text-xs font-medium text-red-500">
                     {errors.confirmPassword}
