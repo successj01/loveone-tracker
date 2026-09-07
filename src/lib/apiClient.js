@@ -6,7 +6,7 @@ export const API_BASE =
 
 export async function apiRequest(path, { method = "GET", body, query } = {}) {
   const token = getToken();
-  let url = `${API_BASE}${path}`;
+  let url = `${API_BASE}/api${path}`;
   if (query) {
     const params = new URLSearchParams();
     for (const [key, value] of Object.entries(query)) {
