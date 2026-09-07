@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, KeyRound, LogIn, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Heart, KeyRound, LogIn, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { validateLogin } from "@/utils/validators";
 import { APP_NAME, DEMO_EMAIL, DEMO_PASSWORD } from "@/utils/constants";
@@ -14,6 +14,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -102,17 +103,29 @@ export default function LoginPage() {
                 <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-300" />
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="••••••••"
-                  className={`w-full rounded-xl border py-2.5 pl-9 pr-4 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-2 ${
+                  className={`w-full rounded-xl border py-2.5 pl-9 pr-11 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-2 ${
                     errors.password
                       ? "border-red-300 focus:ring-red-100"
                       : "border-zinc-200 focus:border-rose-400 focus:ring-rose-100"
                   }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-zinc-400 transition hover:text-zinc-600"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
               </div>
               {errors.password && (
                 <p className="mt-1 text-xs font-medium text-red-500">{errors.password}</p>
